@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website with Preloader</title>
+  <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+  <style>
+    /* Preloader styles */
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #ffffff; /* Change to your background color */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999; /* Ensure it's on top */
+    }
+
+    #progress-bar {
+      width: 80%;
+      height: 10px;
+      background: #e0e0e0;
+      margin: 20px 0;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    #progress-bar div {
+      height: 100%;
+      width: 0;
+      background: #4caf50;
+      transition: width 0.2s;
+    }
+
+    #progress-text {
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      margin-top: 5px;
+      color: #555;
+    }
+
+    /* Hide preloader after loading */
+    body.loaded #preloader {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Preloader -->
+  <div id="preloader">
+    <dotlottie-player
+      src="https://lottie.host/8a94fe11-54ee-4b4e-b39f-f7bd18e659cb/cmRshWKOqG.lottie"
+      background="transparent"
+      speed="1"
+      style="width: 300px; height: 300px"
+      loop
+      autoplay>
+    </dotlottie-player>
+    <div id="progress-bar">
+      <div></div>
+    </div>
+    <div id="progress-text">0%</div>
+  </div>
+
+  <!-- Your main website content -->
+  <div id="content" style="display: none;">
+    <h1>Welcome to My Website</h1>
+    <p>This is your main content.</p>
+  </div>
+
+  <script>
+    // Simulate loading progress
+    const progressBar = document.querySelector("#progress-bar div");
+    const progressText = document.getElementById("progress-text");
+    const content = document.getElementById("content");
+
+    let progress = 0;
+
+    function updateProgress() {
+      progress += 5; // Increment by 5%
+      progressBar.style.width = progress + "%";
+      progressText.textContent = progress + "%";
+
+      if (progress < 100) {
+        setTimeout(updateProgress, 50); // Adjust speed as needed
+      } else {
+        document.body.classList.add("loaded"); // Hide preloader
+        content.style.display = "block"; // Show main content
+      }
+    }
+
+    // Start updating progress on page load
+    window.addEventListener("load", () => {
+      updateProgress();
+    });
+  </script>
+</body>
+</html>
